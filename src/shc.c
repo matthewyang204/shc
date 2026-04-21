@@ -119,12 +119,13 @@ static const char * help[] = {
 
 #define SIZE 4096
 
+int get_arg_max() {
 #ifdef _WIN32
-#define _SC_ARG_MAX 131072
-int sysconf(int argNum){
-    return argNum;
-}
+    return 131072;
+#else
+    return sysconf(_SC_ARG_MAX);
 #endif
+}
 
 static char * file;
 static char * file2;
@@ -1109,7 +1110,7 @@ char * read_script(char * file)
 	text[l] = '\0';
 
 	/* Check current System ARG_MAX limit. */
-	if (l > 0.80 * (cnt = sysconf(_SC_ARG_MAX))) {
+	if (l > 0.80 * (cnt = get_arg_max())) {
 		fprintf(stderr, "%s: WARNING!!\n"
 "   Scripts of length near to (or higher than) the current System limit on\n"
 "   \"maximum size of arguments to EXEC\", could comprise its binary execution.\n"
