@@ -119,6 +119,13 @@ static const char * help[] = {
 
 #define SIZE 4096
 
+#ifdef _WIN32
+#define _SC_ARG_MAX 131072
+int sysconf(int argNum){
+    return argNum;
+}
+#endif
+
 static char * file;
 static char * file2;
 static char   date[21];
